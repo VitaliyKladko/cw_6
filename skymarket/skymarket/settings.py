@@ -46,6 +46,9 @@ INSTALLED_APPS = [
     "users",
     "ads",
     "redoc",
+    "djoser",
+    "drf_spectacular",
+    "corsheaders",
 ]
 
 
@@ -82,7 +85,15 @@ WSGI_APPLICATION = "skymarket.wsgi.application"
 
 # TODO здесь мы настраиваем аутентификацию и пагинацию
 REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'CW API',
+    'DESCRIPTION': 'My CW#6 API',
+    'VERSION': '1.0.0',
+}
+
 # TODO здесь мы настраиваем Djoser
 DJOSER = {
 }
@@ -92,6 +103,14 @@ DJOSER = {
 
 # TODO здесь необходимо настроить подключение к БД
 DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'skymarket',
+        'USER': 'skymarket',
+        'PASSWORD': 'skymarket',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
 }
 
 
