@@ -9,7 +9,7 @@ class User(AbstractBaseUser):
     phone = models.CharField(max_length=15)
     email = models.EmailField(unique=True)
     role = models.CharField(max_length=6, choices=UserRoles.choices, default=UserRoles.USER)
-    image = models.ImageField(upload_to="avatars", null=True, blank=True)
+    image = models.ImageField(upload_to="avatars/", null=True, blank=True)
     is_active = models.BooleanField(default=True)
 
     # эта константа определяет поле для логина пользователя

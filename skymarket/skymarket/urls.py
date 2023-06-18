@@ -3,9 +3,7 @@ from django.contrib import admin
 from django.urls import include, path
 from django.conf import settings
 from django.conf.urls.static import static
-from djoser.views import UserViewSet
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
-from rest_framework.routers import SimpleRouter
 
 # TODO здесь необходимо подклюючит нужные нам urls к проекту
 
