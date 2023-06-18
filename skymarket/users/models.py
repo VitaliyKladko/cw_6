@@ -45,3 +45,6 @@ class User(AbstractBaseUser):
     def has_module_perms(self, app_label):
         return self.is_admin
 
+    def __str__(self):
+        return self.first_name
+
