@@ -86,6 +86,9 @@ WSGI_APPLICATION = "skymarket.wsgi.application"
 # TODO здесь мы настраиваем аутентификацию и пагинацию
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
 }
 
 SPECTACULAR_SETTINGS = {
@@ -166,6 +169,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+AUTH_USER_MODEL = "users.User"
 
 # Include Email Backend
 # TODO эти переменные мы добавили чтобы помочь Вам настроить почтовый ящик на django.
