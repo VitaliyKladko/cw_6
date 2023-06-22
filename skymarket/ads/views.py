@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import pagination, viewsets
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 
 from ads.filters import AdFilter
 from ads.models import Ad, Comment
@@ -29,6 +29,8 @@ class AdViewSet(viewsets.ModelViewSet):
     def get_permissions(self):
         if self.action in ['update', 'destroy']:
             self.permission_classes = [IsAuthenticated, IsOwner | IsAdminUser]
+        elif self.action in ['list']:
+            self.permission_classes = [AllowAny]
         return super().get_permissions()
 
     def perform_create(self, serializer):
