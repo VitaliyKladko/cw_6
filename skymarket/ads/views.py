@@ -1,8 +1,10 @@
 from django.shortcuts import get_object_or_404
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import pagination, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
+from ads.filters import AdFilter
 from ads.models import Ad, Comment
 from ads.permissions import IsOwner
 from ads.serializers import AdDetailSerializer, AdSerializer, CommentSerializer
@@ -14,8 +16,8 @@ class AdPagination(pagination.PageNumberPagination):
 
 class AdViewSet(viewsets.ModelViewSet):
     queryset = Ad.objects.all()
-    # filter_backends = (DjangoFilterBackend,)
-    # filterset_class = AdFilter
+    filter_backends = (DjangoFilterBackend,)    # Подключаем библотеку, отвечающую за фильтрацию к CBV
+    filterset_class = AdFilter  # Выбираем наш фильтр
     pagination_class = AdPagination
     permission_classes = [IsAuthenticated]
 

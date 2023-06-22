@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "djoser",
     "drf_spectacular",
     "corsheaders",
+    "django_filters",
 ]
 
 
