@@ -1,10 +1,11 @@
+from django.shortcuts import get_object_or_404
 from rest_framework import pagination, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
-from ads.models import Ad
+from ads.models import Ad, Comment
 from ads.permissions import IsOwner
-from ads.serializers import AdDetailSerializer, AdSerializer
+from ads.serializers import AdDetailSerializer, AdSerializer, CommentSerializer
 
 
 class AdPagination(pagination.PageNumberPagination):
@@ -13,11 +14,13 @@ class AdPagination(pagination.PageNumberPagination):
 
 class AdViewSet(viewsets.ModelViewSet):
     queryset = Ad.objects.all()
+    # filter_backends = (DjangoFilterBackend,)
+    # filterset_class = AdFilter
     pagination_class = AdPagination
     permission_classes = [IsAuthenticated]
 
     def get_serializer_class(self):
-        if self.action in ['retrieve']:
+        if self.action in ['retrieve', 'me']:
             return AdDetailSerializer
         return AdSerializer
 
@@ -27,8 +30,8 @@ class AdViewSet(viewsets.ModelViewSet):
         return super().get_permissions()
 
     def perform_create(self, serializer):
-        author_id = self.request.user.id
-        serializer.save(author_id=author_id)
+        author = self.request.user.id
+        serializer.save(author_id=author)
 
     @action(detail=False)
     def me(self, request, *args, **kwargs):
@@ -37,4 +40,14 @@ class AdViewSet(viewsets.ModelViewSet):
 
 
 class CommentViewSet(viewsets.ModelViewSet):
-    pass
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+
+    def get_queryset(self):
+        return Comment.objects.filter(ad_id=self.kwargs.get("ad_pk"))
+
+    def perform_create(self, serializer):
+        ad_id = self.kwargs.get("ad_pk")
+        ad_instance = get_object_or_404(Ad, pk=ad_id)
+        user = self.request.user
+        serializer.save(author=user, ad=ad_instance)
